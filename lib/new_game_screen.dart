@@ -118,6 +118,7 @@ class _NewGameScreenState extends State<NewGameScreen> {
 
   void startGame() {
     submitList();
+    Provider.of<GameModel>(context, listen: false).startRound();
 
     Navigator.pop(context);
     Navigator.push(

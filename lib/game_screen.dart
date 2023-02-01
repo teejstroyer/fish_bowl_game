@@ -18,18 +18,53 @@ class _GameScreenState extends State<GameScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              const Text("Rules:"),
-
-              Center(
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: Text(
+                    Provider.of<GameModel>(context, listen: false).getRules(),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 3,
                 child: Consumer<GameModel>(
                   builder: (context, model, child) {
-                    return Text(
-                      "${model.thingCount} total",
-                      textAlign: TextAlign.right,
+                    return Column(
+                      children: [
+                        Center(
+                          child:
+                              Text("${model.thingsLeft}/${model.thingCount}"),
+                        ),
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              model.currentThing,
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyLarge,
+                            ),
+                          ),
+                        ),
+                      ],
                     );
                   },
                 ),
               ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  children: [
+                    Center(
+                      child: IconButton(
+                        onPressed: Provider.of<GameModel>(context, listen: false)
+                            .acceptThing,
+                        icon: const Icon(Icons.check_circle),
+                        iconSize: 200,
+                      ),
+                    )
+                  ],
+                ),
+              )
             ],
           ),
         ),
