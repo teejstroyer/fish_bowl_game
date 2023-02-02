@@ -1,3 +1,4 @@
+import 'package:fish_bowl_game/countdown_timer.dart';
 import 'package:fish_bowl_game/game_model.dart';
 import 'package:fish_bowl_game/new_game_screen.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,10 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (context) => GameModel())],
+    providers: [
+      ChangeNotifierProvider(create: (context) => GameModel()),
+      ChangeNotifierProvider(create: (context) => CountDownTimer())
+    ],
     child: const MyApp(),
   ));
 }

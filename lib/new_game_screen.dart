@@ -12,10 +12,10 @@ class NewGameScreen extends StatefulWidget {
 
 class _NewGameScreenState extends State<NewGameScreen> {
   final List<String> _things = [];
+  TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    var textController = TextEditingController();
     return Scaffold(
       body: Stack(
         children: [
@@ -49,15 +49,7 @@ class _NewGameScreenState extends State<NewGameScreen> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {
-                          if (textController.text.isNotEmpty) {
-                            setState(() {
-                              _things.add(
-                                  textController.text.trim().toUpperCase());
-                              textController.clear();
-                            });
-                          }
-                        },
+                        onPressed: addThing,
                         child: const Text("ADD"),
                       ),
                     ],
@@ -109,6 +101,18 @@ class _NewGameScreenState extends State<NewGameScreen> {
     );
   }
 
+  void addThing() {
+    if (textController.text.isNotEmpty) {
+      var thing = textController.text.trim().toUpperCase();
+      if (!_things.any((element) => element == thing)) {
+        setState(() {
+          _things.add(textController.text.trim().toUpperCase());
+          textController.clear();
+        });
+      }
+    }
+  }
+
   void submitList() {
     Provider.of<GameModel>(context, listen: false).addMany(_things);
     setState(() {
@@ -125,7 +129,6 @@ class _NewGameScreenState extends State<NewGameScreen> {
       context,
       MaterialPageRoute(builder: (context) => const GameScreen()),
     );
-
   }
 
   Widget getPlayerThings() {

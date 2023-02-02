@@ -13,7 +13,7 @@ class GameModel extends ChangeNotifier {
   int get thingsLeft => _wordsInRound.length;
   int get thingCount => _words.length;
   String get team => _team1Turn ? "Team 1" : "Team 2";
-  String get round => "Round ${_round+1}";
+  String get round => "Round ${_round + 1}";
 
   void newGame() {
     _words.clear();
@@ -43,7 +43,7 @@ class GameModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void acceptThing() {
+  int acceptThing() {
     if (thingsLeft > 0) {
       _wordsInRound.removeAt(0);
 
@@ -54,6 +54,7 @@ class GameModel extends ChangeNotifier {
       }
       notifyListeners();
     }
+    return thingsLeft;
   }
 
   String getRules() {
