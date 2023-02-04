@@ -15,6 +15,34 @@ class GameModel extends ChangeNotifier {
   String get team => _team1Turn ? "Team 1" : "Team 2";
   String get round => "Round ${_round + 1}";
 
+  String get rules {
+    switch (_round) {
+      case 2:
+        return "You can say only word. Words like " "Um" " counts!";
+      case 1:
+        return "No speaking, act it out";
+      case 0:
+      default:
+        return "Say anything but the word";
+    }
+  }
+
+  final List<Color> _gameColors = [
+    Colors.red,
+    Colors.blue,
+    Colors.pink,
+    Colors.purple,
+    Colors.orange,
+  ];
+
+  int _gameColorIndex = 0;
+  Color get gameColor => _gameColors[_gameColorIndex];
+
+  void nextColor() {
+    _gameColorIndex++;
+    if (_gameColorIndex >= _gameColors.length) _gameColorIndex = 0;
+  }
+
   void newGame() {
     _words.clear();
     _round = -1;
@@ -55,17 +83,5 @@ class GameModel extends ChangeNotifier {
       notifyListeners();
     }
     return thingsLeft;
-  }
-
-  String getRules() {
-    switch (_round) {
-      case 2:
-        return "You can say only word. Words like " "Um" " counts!";
-      case 1:
-        return "No speaking, act it out";
-      case 0:
-      default:
-        return "Say anything but the word";
-    }
   }
 }

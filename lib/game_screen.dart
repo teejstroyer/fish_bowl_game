@@ -25,98 +25,78 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     var gameModel = Provider.of<GameModel>(context, listen: false);
     var countDownTimer = Provider.of<CountDownTimer>(context, listen: false);
-    return Stack(
-      children: [
-        Scaffold(
-          body: Container(
-            color: Colors.red,
-            child: SafeArea(
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Center(
+    return Scaffold(
+      body: Container(
+        color: gameModel.gameColor,
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Center(
                       child: Text(
-                        gameModel.getRules(),
+                        gameModel.team,
+                        style: Theme.of(context).primaryTextTheme.bodyLarge,
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Consumer<GameModel>(
-                      builder: (context, model, child) {
-                        return Column(
-                          children: [
-                            Center(
-                              child: Text(
-                                "${model.thingsLeft}/${model.thingCount}",
-                              ),
-                            ),
-                            Expanded(
-                              child: Center(
-                                child: Text(
-                                  model.currentThing,
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .bodyLarge,
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
+                    Center(
+                      child: Text(gameModel.rules),
                     ),
-                  ),
-                  Consumer<CountDownTimer>(builder: (context, model, child) {
-                    return Center(
-                      child: Text(model.time.toString()),
-                    );
-                  }),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: [
-                        Center(
-                          child: IconButton(
-                            onPressed: () =>
-                                acceptThing(gameModel, countDownTimer),
-                            icon: const Icon(Icons.check_circle),
-                            iconSize: 200,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+              Expanded(
+                flex: 3,
+                child: Consumer<GameModel>(
+                  builder: (context, model, child) {
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              model.currentThing,
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyLarge,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              Consumer<CountDownTimer>(
+                builder: (context, model, child) {
+                  return AnimatedScale(
+                    scale: (model.time % 2 == 0) ? 1 : 5,
+                    duration: const Duration(seconds: 1),
+                    child: Center(
+                      child: Text(model.time.toString()),
+                    ),
+                  );
+                },
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  children: [
+                    Center(
+                      child: IconButton(
+                        onPressed: () => acceptThing(gameModel, countDownTimer),
+                        icon: const Icon(Icons.check_circle),
+                        iconSize: 200,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
-        buildIgnorePointer()
-      ],
+      ),
     );
-  }
-
-  Widget buildIgnorePointer() {
-    return Consumer<CountDownTimer>(builder: (context, model, child) {
-      int trigger = 20;
-      var color = (model.time < trigger) ? Colors.white : Colors.transparent;
-      double width = (model.time % 2 == 0) ? 15 : 10;
-
-      return IgnorePointer(
-        ignoring: true,
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: color,
-              width: width,
-            ),
-            //color: Colors.transparent,
-            borderRadius: const BorderRadius.all(Radius.circular(50)),
-          ),
-        ),
-      );
-    });
   }
 
   void acceptThing(GameModel gameModel, CountDownTimer timer) {
@@ -124,6 +104,7 @@ class _GameScreenState extends State<GameScreen> {
 
     if (thingsLeft <= 0) {
       timer.stopTimer();
+      gameModel.nextColor();
       Navigator.pop(context);
       Navigator.push(
         context,
@@ -133,4 +114,5 @@ class _GameScreenState extends State<GameScreen> {
       );
     }
   }
+
 }

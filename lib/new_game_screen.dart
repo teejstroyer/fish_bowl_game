@@ -16,11 +16,13 @@ class _NewGameScreenState extends State<NewGameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var gameModel = Provider.of<GameModel>(context, listen: false);
+
     return Scaffold(
       body: Stack(
         children: [
           Container(
-            color: Colors.pink,
+            color: gameModel.gameColor,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -123,6 +125,7 @@ class _NewGameScreenState extends State<NewGameScreen> {
   void startGame() {
     submitList();
     Provider.of<GameModel>(context, listen: false).startRound();
+    Provider.of<GameModel>(context, listen: false).nextColor();
 
     Navigator.pop(context);
     Navigator.push(
