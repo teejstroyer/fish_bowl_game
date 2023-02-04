@@ -7,6 +7,10 @@ class CountDownTimer extends ChangeNotifier {
   Duration _duration = const Duration();
   Timer? _timer;
 
+  int get time => _duration.inSeconds;
+  int get maxTime => _countdownDuration.inSeconds;
+  bool get isTimerRunning => _timer == null ? false : _timer!.isActive;
+
   void startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _timerTick());
   }
@@ -34,6 +38,4 @@ class CountDownTimer extends ChangeNotifier {
     notifyListeners();
   }
 
-  int get time => _duration.inSeconds;
-  bool get isTimerRunning => _timer == null ? false : _timer!.isActive;
 }

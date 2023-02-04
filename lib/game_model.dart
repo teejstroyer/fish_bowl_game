@@ -27,6 +27,10 @@ class GameModel extends ChangeNotifier {
     }
   }
 
+  int roundScore(bool team1, int round) {
+    return team1 ? _team1Score[round] : _team2Score[round];
+  }
+
   final List<Color> _gameColors = [
     Colors.red,
     Colors.blue,

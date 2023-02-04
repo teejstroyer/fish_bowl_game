@@ -1,6 +1,7 @@
 import 'package:fish_bowl_game/countdown_timer.dart';
 import 'package:fish_bowl_game/game_model.dart';
 import 'package:fish_bowl_game/new_game_screen.dart';
+import 'package:fish_bowl_game/round_results_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -84,7 +85,8 @@ class MyApp extends StatelessWidget {
             ),
           ),
           iconTheme: const IconThemeData(color: Colors.white)),
-      home: const NewGameScreen(),
+      //home: const NewGameScreen(),
+      home: const RoundResultsScreeen(),
     );
   }
 }

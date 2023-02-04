@@ -16,7 +16,6 @@ class _GameScreenState extends State<GameScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<CountDownTimer>(context, listen: false).resetTimer();
       Provider.of<CountDownTimer>(context, listen: false).startTimer();
     });
   }
@@ -25,6 +24,8 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     var gameModel = Provider.of<GameModel>(context, listen: false);
     var countDownTimer = Provider.of<CountDownTimer>(context, listen: false);
+    if (countDownTimer.time == 0) nextTeam(gameModel);
+
     return Scaffold(
       body: Container(
         color: gameModel.gameColor,
@@ -115,4 +116,14 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
+  void nextTeam(GameModel gameModel) {
+    gameModel.nextColor();
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const RoundResultsScreeen(),
+      ),
+    );
+  }
 }
