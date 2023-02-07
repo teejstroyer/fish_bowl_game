@@ -1,5 +1,5 @@
+import 'package:fish_bowl_game/countdown_timer.dart';
 import 'package:fish_bowl_game/game_model.dart';
-import 'package:fish_bowl_game/game_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -85,13 +85,18 @@ class _NewGameScreenState extends State<NewGameScreen> {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text("${model.thingCount} total",
-                                textAlign: TextAlign.right),
-                            Text("${_things.length}",
-                                textAlign: TextAlign.right),
-                          ]),
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            "${model.thingCount} total",
+                            textAlign: TextAlign.right,
+                          ),
+                          Text(
+                            "${_things.length}",
+                            textAlign: TextAlign.right,
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
@@ -124,14 +129,13 @@ class _NewGameScreenState extends State<NewGameScreen> {
 
   void startGame() {
     submitList();
-    Provider.of<GameModel>(context, listen: false).startRound();
-    Provider.of<GameModel>(context, listen: false).nextColor();
-
-    Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const GameScreen()),
-    );
+    Provider.of<GameModel>(context, listen: false).showRoundResults(
+        context,
+        Provider.of<CountDownTimer>(
+          context,
+          listen: false,
+        ),
+        newRound: true);
   }
 
   Widget getPlayerThings() {

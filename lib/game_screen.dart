@@ -1,6 +1,5 @@
 import 'package:fish_bowl_game/countdown_timer.dart';
 import 'package:fish_bowl_game/game_model.dart';
-import 'package:fish_bowl_game/round_results_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +15,9 @@ class _GameScreenState extends State<GameScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<CountDownTimer>(context, listen: false).startTimer();
+      Provider.of<CountDownTimer>(context, listen: false).startTimer(() {
+        Provider.of<GameModel>(context, listen: false).nextTeam(context);
+      });
     });
   }
 
@@ -24,7 +25,6 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     var gameModel = Provider.of<GameModel>(context, listen: false);
     var countDownTimer = Provider.of<CountDownTimer>(context, listen: false);
-    if (countDownTimer.time == 0) nextTeam(gameModel);
 
     return Scaffold(
       body: Container(
@@ -102,28 +102,8 @@ class _GameScreenState extends State<GameScreen> {
 
   void acceptThing(GameModel gameModel, CountDownTimer timer) {
     var thingsLeft = gameModel.acceptThing();
-
     if (thingsLeft <= 0) {
-      timer.stopTimer();
-      gameModel.nextColor();
-      Navigator.pop(context);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const RoundResultsScreeen(),
-        ),
-      );
+      gameModel.showRoundResults(context, timer, newRound: true);
     }
-  }
-
-  void nextTeam(GameModel gameModel) {
-    gameModel.nextColor();
-    Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const RoundResultsScreeen(),
-      ),
-    );
   }
 }

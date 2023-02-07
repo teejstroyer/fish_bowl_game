@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class CountDownTimer extends ChangeNotifier {
-  static const _countdownDuration = Duration(seconds: 60);
+  static const _countdownDuration = Duration(seconds: 10);
   Duration _duration = const Duration();
   Timer? _timer;
 
@@ -11,17 +11,23 @@ class CountDownTimer extends ChangeNotifier {
   int get maxTime => _countdownDuration.inSeconds;
   bool get isTimerRunning => _timer == null ? false : _timer!.isActive;
 
-  void startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) => _timerTick());
+  void startTimer(Function onTimerEnd) {
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) => _timerTick(onTimerEnd),
+    );
   }
 
-  void _timerTick() {
+  void _timerTick(Function onTimerEnd) {
     final seconds = _duration.inSeconds - 1;
     if (seconds < 0) {
       _timer?.cancel();
+      onTimerEnd.call();
+      _duration = _countdownDuration;
     } else {
       _duration = Duration(seconds: seconds);
     }
+
     notifyListeners();
   }
 
@@ -37,5 +43,4 @@ class CountDownTimer extends ChangeNotifier {
     _timer?.cancel();
     notifyListeners();
   }
-
 }

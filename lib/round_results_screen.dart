@@ -1,6 +1,5 @@
 import 'package:fish_bowl_game/countdown_timer.dart';
 import 'package:fish_bowl_game/game_model.dart';
-import 'package:fish_bowl_game/game_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,9 +30,15 @@ class RoundResultsScreeen extends StatelessWidget {
                 const Text("DA RULES"),
                 Text(gameModel.rules),
                 Expanded(
-                  child: TextButton(
-                    onPressed: () => startRound(gameModel, context),
-                    child: const Text("START GAME"),
+                  child: Column(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          gameModel.showGameScreen(context);
+                        },
+                        child: const Text("PLAY"),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -100,17 +105,6 @@ class RoundResultsScreeen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: scores,
-    );
-  }
-
-  void startRound(GameModel gameModel, BuildContext context) {
-    gameModel.startRound();
-    gameModel.nextColor();
-
-    Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const GameScreen()),
     );
   }
 }

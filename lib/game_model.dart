@@ -1,3 +1,6 @@
+import 'package:fish_bowl_game/countdown_timer.dart';
+import 'package:fish_bowl_game/game_screen.dart';
+import 'package:fish_bowl_game/round_results_screen.dart';
 import 'package:flutter/material.dart';
 
 class GameModel extends ChangeNotifier {
@@ -18,7 +21,7 @@ class GameModel extends ChangeNotifier {
   String get rules {
     switch (_round) {
       case 2:
-        return "You can say only word. Words like " "Um" " counts!";
+        return "You can say only one word. Words like \"Um\" count! NO FILLER WORDS OR SOUNDS!";
       case 1:
         return "No speaking, act it out";
       case 0:
@@ -68,13 +71,6 @@ class GameModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void startRound() {
-    _round++;
-    _wordsInRound = [..._words];
-    _wordsInRound.shuffle();
-    notifyListeners();
-  }
-
   int acceptThing() {
     if (thingsLeft > 0) {
       _wordsInRound.removeAt(0);
@@ -87,5 +83,45 @@ class GameModel extends ChangeNotifier {
       notifyListeners();
     }
     return thingsLeft;
+  }
+
+  void showRoundResults(
+    BuildContext context,
+    CountDownTimer timer, {
+    bool newRound = false,
+  }) {
+    timer.stopTimer();
+    if (newRound) {
+      _round++;
+      _wordsInRound = [..._words];
+      _wordsInRound.shuffle();
+    } else {
+      timer.resetTimer();
+    }
+
+    nextColor();
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const RoundResultsScreeen()),
+    );
+  }
+
+  void showGameScreen(BuildContext context) {
+    nextColor();
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const GameScreen()),
+    );
+  }
+
+  void nextTeam(BuildContext context) {
+    nextColor();
+    _team1Turn = !_team1Turn;
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const RoundResultsScreeen(),
+      ),
+    );
   }
 }
