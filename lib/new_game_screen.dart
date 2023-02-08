@@ -1,3 +1,4 @@
+import 'package:fish_bowl_game/countdown_timer.dart';
 import 'package:fish_bowl_game/game_model.dart';
 import 'package:fish_bowl_game/game_screen.dart';
 import 'package:flutter/material.dart';
@@ -126,6 +127,7 @@ class _NewGameScreenState extends State<NewGameScreen> {
     submitList();
     Provider.of<GameModel>(context, listen: false).startRound();
     Provider.of<GameModel>(context, listen: false).nextColor();
+    Provider.of<CountDownTimer>(context, listen: false).resetTimer();
 
     Navigator.pop(context);
     Navigator.push(

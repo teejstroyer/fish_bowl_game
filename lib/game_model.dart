@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class GameModel extends ChangeNotifier {
@@ -39,7 +41,7 @@ class GameModel extends ChangeNotifier {
     Colors.orange,
   ];
 
-  int _gameColorIndex = 0;
+  int _gameColorIndex = Random().nextInt(5);
   Color get gameColor => _gameColors[_gameColorIndex];
 
   void nextColor() {
