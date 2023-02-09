@@ -3,8 +3,8 @@ import 'package:fish_bowl_game/game_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class RoundResultsScreeen extends StatelessWidget {
-  const RoundResultsScreeen({super.key});
+class RoundResultsScreen extends StatelessWidget {
+  const RoundResultsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
