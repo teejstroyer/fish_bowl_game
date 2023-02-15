@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class CountDownTimer extends ChangeNotifier {
-  static const _countdownDuration = Duration(seconds: 1000);
+  static const _countdownDuration = Duration(seconds: 10);
   Duration _duration = const Duration();
   Timer? _timer;
 
