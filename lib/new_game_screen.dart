@@ -1,3 +1,4 @@
+import 'package:fish_bowl_game/adjust_countdown_timer.dart';
 import 'package:fish_bowl_game/countdown_timer.dart';
 import 'package:fish_bowl_game/game_model.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,7 @@ class _NewGameScreenState extends State<NewGameScreen> {
                         onPressed: addThing,
                         child: const Text("ADD"),
                       ),
+                      const AdjustCountdownTimer(),
                     ],
                   ),
                   Expanded(
@@ -195,4 +197,6 @@ class _NewGameScreenState extends State<NewGameScreen> {
       ),
     );
   }
+
+  
 }
