@@ -99,8 +99,6 @@ class GameModel extends ChangeNotifier {
       _round++;
       _wordsInRound = [..._words];
       _wordsInRound.shuffle();
-    } else {
-      timer.resetTimer();
     }
 
     nextColor();
@@ -110,8 +108,9 @@ class GameModel extends ChangeNotifier {
     );
   }
 
-  void showGameScreen(BuildContext context) {
+  void showGameScreen(BuildContext context, CountDownTimer timer) {
     nextColor();
+    timer.resetTimer();
     Navigator.of(context).pop();
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => const GameScreen()),
