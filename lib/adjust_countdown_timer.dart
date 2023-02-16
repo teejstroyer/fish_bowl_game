@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:fish_bowl_game/countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,34 +8,61 @@ class AdjustCountdownTimer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: timerUI(),
+    return Wrap(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: const BoxDecoration(
+            border: Border.symmetric(
+              vertical: BorderSide(
+                color: Colors.white,
+                width: 20,
+              ),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Round Time',
+                style: TextStyle(fontSize: 32),
+              ),
+              timerUI(),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
-  Consumer<CountDownTimer> timerUI() {
+  Widget timerUI() {
     return Consumer<CountDownTimer>(builder: (context, timer, child) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            IconButton(
-              alignment: Alignment.centerLeft,
-              onPressed: (() {
-                timer.addTime(-1);
-              }),
-              icon: const Icon(Icons.remove),
-            ),
-            Text(timer.maxTime.toString()),
-            IconButton(
-              alignment: Alignment.centerRight,
-              onPressed: () {
-                timer.addTime(1);
-              },
-              icon: const Icon(Icons.add),
-            ),
-          ],
-        ),
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            iconSize: 50,
+            alignment: Alignment.centerLeft,
+            onPressed: (() {
+              timer.addTime(-1);
+            }),
+            icon: const Icon(Icons.remove),
+          ),
+          Text(
+            timer.maxTime.toString().padLeft(3, '0'),
+            style: const TextStyle(
+                fontSize: 48, fontFeatures: [FontFeature.tabularFigures()]),
+          ),
+          IconButton(
+            iconSize: 50,
+            alignment: Alignment.centerRight,
+            onPressed: () {
+              timer.addTime(1);
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
       );
     });
   }

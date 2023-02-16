@@ -1,3 +1,4 @@
+import 'package:fish_bowl_game/adjust_countdown_timer.dart';
 import 'package:fish_bowl_game/countdown_timer.dart';
 import 'package:fish_bowl_game/game_model.dart';
 import 'package:flutter/material.dart';
@@ -29,12 +30,17 @@ class RoundResultsScreen extends StatelessWidget {
                 scoreBoard(gameModel),
                 const Text("DA RULES"),
                 Text(gameModel.rules),
+                const Expanded(
+                  child: Center(
+                    child: AdjustCountdownTimer(),
+                  ),
+                ),
                 Expanded(
                   child: Column(
                     children: [
                       TextButton(
                         onPressed: () {
-                          gameModel.showGameScreen(context);
+                          gameModel.showGameScreen(context, countDownTimer);
                         },
                         child: const Text("PLAY"),
                       ),
