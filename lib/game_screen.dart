@@ -2,6 +2,7 @@ import 'package:fish_bowl_game/countdown_timer.dart';
 import 'package:fish_bowl_game/game_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:fish_bowl_game/game_pause_screen_button.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -32,6 +33,10 @@ class _GameScreenState extends State<GameScreen> {
         child: SafeArea(
           child: Column(
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: const [GamePauseScreenButton()],
+              ),
               Expanded(
                 flex: 1,
                 child: Column(

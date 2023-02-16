@@ -106,7 +106,7 @@ class GameModel extends ChangeNotifier {
     nextColor();
     Navigator.of(context).pop();
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => const RoundResultsScreeen()),
+      MaterialPageRoute(builder: (context) => const RoundResultsScreen()),
     );
   }
 
@@ -124,7 +124,7 @@ class GameModel extends ChangeNotifier {
     Navigator.of(context).pop();
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const RoundResultsScreeen(),
+        builder: (context) => const RoundResultsScreen(),
       ),
     );
   }
