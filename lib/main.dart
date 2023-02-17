@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:fish_bowl_game/countdown_timer.dart';
 import 'package:fish_bowl_game/game_model.dart';
 import 'package:fish_bowl_game/new_game_screen.dart';
@@ -23,67 +24,75 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: Colors.white,
-          inputDecorationTheme: const InputDecorationTheme(
-            enabledBorder: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            hintStyle: TextStyle(color: Colors.white54, fontSize: 34),
-            labelStyle: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+        primaryColor: Colors.white,
+        inputDecorationTheme: const InputDecorationTheme(
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          hintStyle: TextStyle(color: Colors.white54, fontSize: 34),
+          labelStyle: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
-          textTheme: const TextTheme(
-            bodySmall: TextStyle(
-              fontSize: 14,
+        ),
+        textTheme: const TextTheme(
+          bodySmall: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+            fontFeatures: [FontFeature.tabularFigures()],
+          ),
+          bodyMedium: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+            fontFeatures: [FontFeature.tabularFigures()],
+          ),
+          bodyLarge: TextStyle(
+            fontSize: 40,
+            color: Colors.white,
+            fontFeatures: [FontFeature.tabularFigures()],
+          ),
+          labelLarge: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+            fontFeatures: [FontFeature.tabularFigures()],
+          ),
+        ),
+        primaryTextTheme: const TextTheme(
+          bodyLarge: TextStyle(
+            fontSize: 40,
+            color: Colors.white,
+            fontFeatures: [FontFeature.tabularFigures()],
+          ),
+          labelLarge: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+            fontFeatures: [FontFeature.tabularFigures()],
+          ),
+        ),
+        buttonTheme: const ButtonThemeData(
+          buttonColor: Colors.white,
+          disabledColor: Colors.white54,
+          focusColor: Colors.white,
+          hoverColor: Colors.white,
+          highlightColor: Colors.white,
+          splashColor: Colors.transparent,
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.white,
+            textStyle: const TextStyle(
+              decorationColor: Colors.white,
               fontWeight: FontWeight.w900,
-              color: Colors.white,
-            ),
-            bodyMedium: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w900,
-              color: Colors.white,
-            ),
-            bodyLarge: TextStyle(
-              fontSize: 40,
-              color: Colors.white,
-            ),
-            labelLarge: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w900,
-              color: Colors.white,
+              fontSize: 28,
             ),
           ),
-          primaryTextTheme: const TextTheme(
-            bodyLarge: TextStyle(
-              fontSize: 40,
-              color: Colors.white,
-            ),
-            labelLarge: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w900,
-              color: Colors.white,
-            ),
-          ),
-          buttonTheme: const ButtonThemeData(
-            buttonColor: Colors.white,
-            disabledColor: Colors.white54,
-            focusColor: Colors.white,
-            hoverColor: Colors.white,
-            highlightColor: Colors.white,
-            splashColor: Colors.transparent,
-          ),
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.white,
-              textStyle: const TextStyle(
-                  decorationColor: Colors.white,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 28),
-            ),
-          ),
-          iconTheme: const IconThemeData(color: Colors.white)),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       home: const NewGameScreen(),
       // home: const RoundResultsScreeen(),
     );
