@@ -99,19 +99,18 @@ class GameModel extends ChangeNotifier {
       _round++;
       _wordsInRound = [..._words];
       _wordsInRound.shuffle();
-    } else {
-      timer.resetTimer();
     }
 
     nextColor();
     Navigator.of(context).pop();
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => const RoundResultsScreeen()),
+      MaterialPageRoute(builder: (context) => const RoundResultsScreen()),
     );
   }
 
-  void showGameScreen(BuildContext context) {
+  void showGameScreen(BuildContext context, CountDownTimer timer) {
     nextColor();
+    timer.resetTimer();
     Navigator.of(context).pop();
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => const GameScreen()),
@@ -124,7 +123,7 @@ class GameModel extends ChangeNotifier {
     Navigator.of(context).pop();
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const RoundResultsScreeen(),
+        builder: (context) => const RoundResultsScreen(),
       ),
     );
   }
