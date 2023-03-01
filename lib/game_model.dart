@@ -1,11 +1,12 @@
 import 'dart:math';
-
 import 'package:fish_bowl_game/countdown_timer.dart';
 import 'package:fish_bowl_game/game_screen.dart';
 import 'package:fish_bowl_game/round_results_screen.dart';
 import 'package:flutter/material.dart';
 
 class GameModel extends ChangeNotifier {
+  final CountDownTimer _countDownTimer;
+
   final List<String> _words = [];
   List<String> _wordsInRound = [];
 
@@ -22,7 +23,7 @@ class GameModel extends ChangeNotifier {
     Colors.orange,
   ];
 
-  GameModel() {
+  GameModel(this._countDownTimer) {
     _gameColorIndex = Random().nextInt(_gameColors.length);
   }
 
@@ -75,7 +76,7 @@ class GameModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  int acceptThing() {
+  void acceptThing(BuildContext context) {
     if (thingsLeft > 0) {
       _wordsInRound.removeAt(0);
 
@@ -84,33 +85,43 @@ class GameModel extends ChangeNotifier {
       } else {
         _team2Score[_round]++;
       }
-      notifyListeners();
+
+      if (thingsLeft <= 0) {
+        showRoundResults(context, false, true);
+      } else {
+        notifyListeners();
+      }
     }
-    return thingsLeft;
   }
 
-  void showRoundResults(
-    BuildContext context,
-    CountDownTimer timer, {
-    bool newRound = false,
-  }) {
-    timer.stopTimer();
-    if (newRound) {
-      _round++;
-      _wordsInRound = [..._words];
-      _wordsInRound.shuffle();
-    }
+  void updateRound() {
+    _round++;
+    _wordsInRound = [..._words];
+    _wordsInRound.shuffle();
+  }
 
+  void showRoundResults(BuildContext context, bool resetTimer, bool newRound) {
+    _countDownTimer.stopTimer(reset: resetTimer);
+
+    if (newRound) {
+      updateRound();
+    }
     nextColor();
+
     Navigator.of(context).pop();
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => const RoundResultsScreen()),
+      MaterialPageRoute(
+        builder: (context) => RoundResultsScreen(resetTimer),
+      ),
     );
   }
 
-  void showGameScreen(BuildContext context, CountDownTimer timer) {
+  void showGameScreen(BuildContext context, bool resetTimer) {
     nextColor();
-    timer.resetTimer();
+    if (resetTimer) {
+      _countDownTimer.resetTimer();
+    }
+
     Navigator.of(context).pop();
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => const GameScreen()),
@@ -120,11 +131,17 @@ class GameModel extends ChangeNotifier {
   void nextTeam(BuildContext context) {
     nextColor();
     _team1Turn = !_team1Turn;
-    Navigator.of(context).pop();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const RoundResultsScreen(),
-      ),
-    );
+    showRoundResults(context, true, false);
+  }
+
+  void startTimer(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _countDownTimer.startTimer(
+        () {
+          nextTeam(context);
+          _countDownTimer.resetTimer();
+        },
+      );
+    });
   }
 }

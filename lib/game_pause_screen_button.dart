@@ -56,18 +56,9 @@ class GamePauseScreenButton extends StatelessWidget {
               ],
             );
           }),
-        ).then(
-          (value) => WidgetsBinding.instance.addPostFrameCallback(
-            (_) {
-              Provider.of<CountDownTimer>(context, listen: false).startTimer(
-                () {
-                  Provider.of<GameModel>(context, listen: false)
-                      .nextTeam(context);
-                },
-              );
-            },
-          ),
-        );
+        ).then((value) {
+          Provider.of<GameModel>(context, listen: false).startTimer(context);
+        });
       },
     );
   }

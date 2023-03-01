@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RoundResultsScreen extends StatelessWidget {
-  const RoundResultsScreen({super.key});
+  final bool _resetTimer;
+  const RoundResultsScreen(this._resetTimer, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,18 +55,20 @@ class RoundResultsScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Expanded(
-                    child: Center(
-                      child: AdjustCountdownTimer(),
-                    ),
-                  ),
+                  countDownTimer.time == countDownTimer.maxTime
+                      ? const Expanded(
+                          child: Center(
+                            child: AdjustCountdownTimer(),
+                          ),
+                        )
+                      : Expanded(child: Container()),
                   Expanded(
                     child: Column(
                       children: [
                         Text(roundMessage),
                         TextButton(
                           onPressed: () {
-                            gameModel.showGameScreen(context, countDownTimer);
+                            gameModel.showGameScreen(context, _resetTimer);
                           },
                           child: const Text("PLAY"),
                         ),

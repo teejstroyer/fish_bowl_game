@@ -1,4 +1,3 @@
-import 'package:fish_bowl_game/countdown_timer.dart';
 import 'package:fish_bowl_game/game_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -130,12 +129,10 @@ class _NewGameScreenState extends State<NewGameScreen> {
   void startGame() {
     submitList();
     Provider.of<GameModel>(context, listen: false).showRoundResults(
-        context,
-        Provider.of<CountDownTimer>(
-          context,
-          listen: false,
-        ),
-        newRound: true);
+      context,
+      true,
+      true,
+    );
   }
 
   Widget getPlayerThings() {
