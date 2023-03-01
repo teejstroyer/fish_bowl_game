@@ -1,8 +1,8 @@
-import 'package:fish_bowl_game/countdown_timer.dart';
-import 'package:fish_bowl_game/game_model.dart';
+import 'package:fish_bowl_game/providers/countdown_timer.dart';
+import 'package:fish_bowl_game/providers/game_model.dart';
+import 'package:fish_bowl_game/screens/game_pause_screen_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fish_bowl_game/game_pause_screen_button.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -70,7 +70,7 @@ class _GameScreenState extends State<GameScreen> {
                   },
                 ),
               ),
-              Consumer<CountDownTimer>(
+              Consumer<CountdownTimer>(
                 builder: (context, model, child) {
                   return AnimatedScale(
                     scale: (model.time % 2 == 0) ? 1 : 5,

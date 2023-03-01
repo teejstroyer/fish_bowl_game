@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:fish_bowl_game/countdown_timer.dart';
+import 'package:fish_bowl_game/providers/countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +36,7 @@ class AdjustCountdownTimer extends StatelessWidget {
   }
 
   Widget timerUI() {
-    return Consumer<CountDownTimer>(builder: (context, timer, child) {
+    return Consumer<CountdownTimer>(builder: (context, timer, child) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,

@@ -1,11 +1,11 @@
 import 'dart:math';
-import 'package:fish_bowl_game/countdown_timer.dart';
-import 'package:fish_bowl_game/game_screen.dart';
-import 'package:fish_bowl_game/round_results_screen.dart';
+import 'package:fish_bowl_game/providers/countdown_timer.dart';
+import 'package:fish_bowl_game/screens/game_screen.dart';
+import 'package:fish_bowl_game/screens/round_results_screen.dart';
 import 'package:flutter/material.dart';
 
 class GameModel extends ChangeNotifier {
-  final CountDownTimer _countDownTimer;
+  final CountdownTimer _countdownTimer;
 
   final List<String> _words = [];
   List<String> _wordsInRound = [];
@@ -23,7 +23,7 @@ class GameModel extends ChangeNotifier {
     Colors.orange,
   ];
 
-  GameModel(this._countDownTimer) {
+  GameModel(this._countdownTimer) {
     _gameColorIndex = Random().nextInt(_gameColors.length);
   }
 
@@ -77,7 +77,7 @@ class GameModel extends ChangeNotifier {
   }
 
   void acceptThing(BuildContext context) {
-    if (thingsLeft > 0) {
+    if (thingsLeft > 0 && _round < _team1Score.length) {
       _wordsInRound.removeAt(0);
 
       if (_team1Turn) {
@@ -101,7 +101,7 @@ class GameModel extends ChangeNotifier {
   }
 
   void showRoundResults(BuildContext context, bool resetTimer, bool newRound) {
-    _countDownTimer.stopTimer(reset: resetTimer);
+    _countdownTimer.stopTimer(reset: resetTimer);
 
     if (newRound) {
       updateRound();
@@ -119,7 +119,7 @@ class GameModel extends ChangeNotifier {
   void showGameScreen(BuildContext context, bool resetTimer) {
     nextColor();
     if (resetTimer) {
-      _countDownTimer.resetTimer();
+      _countdownTimer.resetTimer();
     }
 
     Navigator.of(context).pop();
@@ -136,10 +136,10 @@ class GameModel extends ChangeNotifier {
 
   void startTimer(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _countDownTimer.startTimer(
+      _countdownTimer.startTimer(
         () {
           nextTeam(context);
-          _countDownTimer.resetTimer();
+          _countdownTimer.resetTimer();
         },
       );
     });

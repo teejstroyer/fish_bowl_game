@@ -1,7 +1,7 @@
+import 'package:fish_bowl_game/providers/countdown_timer.dart';
+import 'package:fish_bowl_game/providers/game_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fish_bowl_game/game_model.dart';
 import 'package:provider/provider.dart';
-import 'package:fish_bowl_game/countdown_timer.dart';
 
 class GamePauseScreenButton extends StatelessWidget {
   const GamePauseScreenButton({super.key});
@@ -9,13 +9,13 @@ class GamePauseScreenButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var gameModel = Provider.of<GameModel>(context, listen: false);
-    var countDownTimer = Provider.of<CountDownTimer>(context, listen: false);
+    var countdownTimer = Provider.of<CountdownTimer>(context, listen: false);
     var textColor = gameModel.gameColor;
 
     return IconButton(
       icon: const Icon(Icons.pause),
       onPressed: () {
-        countDownTimer.stopTimer(reset: false);
+        countdownTimer.stopTimer(reset: false);
         showDialog(
           context: context,
           builder: ((context) {

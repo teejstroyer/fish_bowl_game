@@ -1,12 +1,12 @@
-import 'package:fish_bowl_game/countdown_timer.dart';
-import 'package:fish_bowl_game/game_model.dart';
-import 'package:fish_bowl_game/game_theme.dart';
-import 'package:fish_bowl_game/new_game_screen.dart';
+import 'package:fish_bowl_game/config/game_theme.dart';
+import 'package:fish_bowl_game/providers/countdown_timer.dart';
+import 'package:fish_bowl_game/providers/game_model.dart';
+import 'package:fish_bowl_game/screens/new_game_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  var countdownTimer = CountDownTimer();
+  var countdownTimer = CountdownTimer();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => countdownTimer),
