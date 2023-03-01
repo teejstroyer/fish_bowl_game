@@ -1,15 +1,16 @@
-import 'dart:ui';
-import 'package:fish_bowl_game/countdown_timer.dart';
-import 'package:fish_bowl_game/game_model.dart';
-import 'package:fish_bowl_game/new_game_screen.dart';
+import 'package:fish_bowl_game/config/game_theme.dart';
+import 'package:fish_bowl_game/providers/countdown_timer.dart';
+import 'package:fish_bowl_game/providers/game_model.dart';
+import 'package:fish_bowl_game/screens/new_game_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  var countdownTimer = CountdownTimer();
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (context) => CountDownTimer()),
-      ChangeNotifierProvider(create: (context) => GameModel()),
+      ChangeNotifierProvider(create: (context) => countdownTimer),
+      ChangeNotifierProvider(create: (context) => GameModel(countdownTimer)),
     ],
     child: const MyApp(),
   ));
@@ -23,78 +24,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.white,
-        inputDecorationTheme: const InputDecorationTheme(
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          hintStyle: TextStyle(color: Colors.white54, fontSize: 34),
-          labelStyle: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        textTheme: const TextTheme(
-          bodySmall: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w900,
-            color: Colors.white,
-            fontFeatures: [FontFeature.tabularFigures()],
-          ),
-          bodyMedium: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w900,
-            color: Colors.white,
-            fontFeatures: [FontFeature.tabularFigures()],
-          ),
-          bodyLarge: TextStyle(
-            fontSize: 40,
-            color: Colors.white,
-            fontFeatures: [FontFeature.tabularFigures()],
-          ),
-          labelLarge: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w900,
-            color: Colors.white,
-            fontFeatures: [FontFeature.tabularFigures()],
-          ),
-        ),
-        primaryTextTheme: const TextTheme(
-          bodyLarge: TextStyle(
-            fontSize: 40,
-            color: Colors.white,
-            fontFeatures: [FontFeature.tabularFigures()],
-          ),
-          labelLarge: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w900,
-            color: Colors.white,
-            fontFeatures: [FontFeature.tabularFigures()],
-          ),
-        ),
-        buttonTheme: const ButtonThemeData(
-          buttonColor: Colors.white,
-          disabledColor: Colors.white54,
-          focusColor: Colors.white,
-          hoverColor: Colors.white,
-          highlightColor: Colors.white,
-          splashColor: Colors.transparent,
-        ),
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.white,
-            textStyle: const TextStyle(
-              decorationColor: Colors.white,
-              fontWeight: FontWeight.w900,
-              fontSize: 28,
-            ),
-          ),
-        ),
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
+      theme: GameTheme().theme,
       home: const NewGameScreen(),
-      // home: const RoundResultsScreeen(),
     );
   }
 }

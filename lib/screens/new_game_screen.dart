@@ -1,5 +1,4 @@
-import 'package:fish_bowl_game/countdown_timer.dart';
-import 'package:fish_bowl_game/game_model.dart';
+import 'package:fish_bowl_game/providers/game_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +11,17 @@ class NewGameScreen extends StatefulWidget {
 
 class _NewGameScreenState extends State<NewGameScreen> {
   final List<String> _things = [];
-  TextEditingController textController = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
+  bool _validInput = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController.addListener(() {
+      _validInput = validateInput();
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +49,7 @@ class _NewGameScreenState extends State<NewGameScreen> {
                           bottom: 0,
                         ),
                         child: TextField(
-                          controller: textController,
+                          controller: _textController,
                           textAlign: TextAlign.center,
                           style:
                               Theme.of(context).inputDecorationTheme.labelStyle,
@@ -51,7 +60,7 @@ class _NewGameScreenState extends State<NewGameScreen> {
                         ),
                       ),
                       TextButton(
-                        onPressed: addThing,
+                        onPressed: _validInput ? addThing : null,
                         child: const Text("ADD"),
                       ),
                     ],
@@ -61,11 +70,14 @@ class _NewGameScreenState extends State<NewGameScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
-                          onPressed: submitList,
+                          onPressed: _things.isNotEmpty ? submitList : null,
                           child: const Text("NEXT PLAYER"),
                         ),
                         TextButton(
-                          onPressed: startGame,
+                          onPressed:
+                              (_things.isNotEmpty || gameModel.thingCount > 0)
+                                  ? startGame
+                                  : null,
                           child: const Text("START GAME"),
                         ),
                       ],
@@ -108,15 +120,18 @@ class _NewGameScreenState extends State<NewGameScreen> {
     );
   }
 
+  bool validateInput() {
+    var thing = _textController.text.trim().toUpperCase();
+    return _textController.text.isNotEmpty &&
+        !_things.any((element) => element == thing);
+  }
+
   void addThing() {
-    if (textController.text.isNotEmpty) {
-      var thing = textController.text.trim().toUpperCase();
-      if (!_things.any((element) => element == thing)) {
-        setState(() {
-          _things.add(textController.text.trim().toUpperCase());
-          textController.clear();
-        });
-      }
+    if (validateInput()) {
+      setState(() {
+        _things.add(_textController.text.trim().toUpperCase());
+        _textController.clear();
+      });
     }
   }
 
@@ -130,12 +145,10 @@ class _NewGameScreenState extends State<NewGameScreen> {
   void startGame() {
     submitList();
     Provider.of<GameModel>(context, listen: false).showRoundResults(
-        context,
-        Provider.of<CountDownTimer>(
-          context,
-          listen: false,
-        ),
-        newRound: true);
+      context,
+      true,
+      true,
+    );
   }
 
   Widget getPlayerThings() {

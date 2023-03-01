@@ -1,4 +1,4 @@
-import 'package:fish_bowl_game/game_model.dart';
+import 'package:fish_bowl_game/providers/game_model.dart';
 import 'package:flutter/material.dart';
 
 class ScoreBoard extends StatelessWidget {

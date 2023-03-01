@@ -1,8 +1,8 @@
-import 'package:fish_bowl_game/countdown_timer.dart';
-import 'package:fish_bowl_game/game_model.dart';
+import 'package:fish_bowl_game/providers/countdown_timer.dart';
+import 'package:fish_bowl_game/providers/game_model.dart';
+import 'package:fish_bowl_game/screens/game_pause_screen_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fish_bowl_game/game_pause_screen_button.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -15,17 +15,12 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<CountDownTimer>(context, listen: false).startTimer(() {
-        Provider.of<GameModel>(context, listen: false).nextTeam(context);
-      });
-    });
+    Provider.of<GameModel>(context, listen: false).startTimer(context);
   }
 
   @override
   Widget build(BuildContext context) {
     var gameModel = Provider.of<GameModel>(context, listen: false);
-    var countDownTimer = Provider.of<CountDownTimer>(context, listen: false);
 
     return Scaffold(
       body: Container(
@@ -75,7 +70,7 @@ class _GameScreenState extends State<GameScreen> {
                   },
                 ),
               ),
-              Consumer<CountDownTimer>(
+              Consumer<CountdownTimer>(
                 builder: (context, model, child) {
                   return AnimatedScale(
                     scale: (model.time % 2 == 0) ? 1 : 5,
@@ -92,7 +87,10 @@ class _GameScreenState extends State<GameScreen> {
                   children: [
                     Center(
                       child: IconButton(
-                        onPressed: () => acceptThing(gameModel, countDownTimer),
+                        onPressed: () => acceptThing(
+                          context,
+                          gameModel,
+                        ),
                         icon: const Icon(Icons.check_circle),
                         iconSize: 200,
                       ),
@@ -107,10 +105,7 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
 
-  void acceptThing(GameModel gameModel, CountDownTimer timer) {
-    var thingsLeft = gameModel.acceptThing();
-    if (thingsLeft <= 0) {
-      gameModel.showRoundResults(context, timer, newRound: true);
-    }
+  void acceptThing(BuildContext context, GameModel gameModel) {
+    gameModel.acceptThing(context);
   }
 }
