@@ -3,6 +3,7 @@ import 'package:fish_bowl_game/providers/countdown_timer.dart';
 import 'package:fish_bowl_game/screens/game_screen.dart';
 import 'package:fish_bowl_game/screens/round_results_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class GameModel extends ChangeNotifier {
   final CountdownTimer _countdownTimer;
@@ -95,9 +96,11 @@ class GameModel extends ChangeNotifier {
   }
 
   void updateRound() {
-    _round++;
-    _wordsInRound = [..._words];
-    _wordsInRound.shuffle();
+    preventEvenThingCount().then((_) {
+      _round++;
+      _wordsInRound = [..._words];
+      _wordsInRound.shuffle();
+    });
   }
 
   void showRoundResults(BuildContext context, bool resetTimer, bool newRound) {
@@ -143,5 +146,23 @@ class GameModel extends ChangeNotifier {
         },
       );
     });
+  }
+
+  Future<String> getRandomWord(int? seed) async {
+    String dictionary = await rootBundle.loadString('assets/dictionary.txt');
+    var list = dictionary.split(' ');
+    var random = Random(seed);
+
+    var word = list[random.nextInt(list.length)];
+    return word;
+  }
+
+  Future<void> preventEvenThingCount() async {
+    if (thingCount % 2 == 0) {
+      await getRandomWord(null).then((word) {
+        add(word);
+        notifyListeners();
+      });
+    }
   }
 }
