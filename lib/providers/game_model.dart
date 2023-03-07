@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:fish_bowl_game/providers/countdown_timer.dart';
 import 'package:fish_bowl_game/screens/game_screen.dart';
 import 'package:fish_bowl_game/screens/round_results_screen.dart';
@@ -6,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class GameModel extends ChangeNotifier {
-  final CountdownTimer _countdownTimer;
-
+  final AudioPlayer _audioPlayer = AudioPlayer();
   final List<String> _words = [];
   List<String> _wordsInRound = [];
 
@@ -24,7 +24,9 @@ class GameModel extends ChangeNotifier {
     Colors.orange,
   ];
 
-  GameModel(this._countdownTimer) {
+  CountdownTimer countdownTimer = CountdownTimer();
+
+  GameModel() {
     _gameColorIndex = Random().nextInt(_gameColors.length);
   }
 
@@ -81,6 +83,8 @@ class GameModel extends ChangeNotifier {
     if (thingsLeft > 0 && _round < _team1Score.length) {
       _wordsInRound.removeAt(0);
 
+      _audioPlayer.play(AssetSource('audio/AcceptThing.mp3'));
+
       if (_team1Turn) {
         _team1Score[_round]++;
       } else {
@@ -104,7 +108,7 @@ class GameModel extends ChangeNotifier {
   }
 
   void showRoundResults(BuildContext context, bool resetTimer, bool newRound) {
-    _countdownTimer.stopTimer(reset: resetTimer);
+    countdownTimer.stopTimer(reset: resetTimer);
 
     if (newRound) {
       updateRound();
@@ -122,7 +126,7 @@ class GameModel extends ChangeNotifier {
   void showGameScreen(BuildContext context, bool resetTimer) {
     nextColor();
     if (resetTimer) {
-      _countdownTimer.resetTimer();
+      countdownTimer.resetTimer();
     }
 
     Navigator.of(context).pop();
@@ -139,10 +143,10 @@ class GameModel extends ChangeNotifier {
 
   void startTimer(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _countdownTimer.startTimer(
+      countdownTimer.startTimer(
         () {
           nextTeam(context);
-          _countdownTimer.resetTimer();
+          countdownTimer.resetTimer();
         },
       );
     });

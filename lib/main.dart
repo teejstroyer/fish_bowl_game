@@ -6,11 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  var countdownTimer = CountdownTimer();
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (context) => countdownTimer),
-      ChangeNotifierProvider(create: (context) => GameModel(countdownTimer)),
+      ChangeNotifierProvider(create: (context) => CountdownTimer()),
+      ChangeNotifierProxyProvider<CountdownTimer, GameModel>(
+        create: (_) => GameModel(),
+        update: (_, countdownTimer, gameModel) {
+          gameModel?.countdownTimer = countdownTimer;
+          return gameModel ?? GameModel();
+        },
+      )
     ],
     child: const MyApp(),
   ));
