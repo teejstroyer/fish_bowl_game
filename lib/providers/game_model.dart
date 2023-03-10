@@ -16,6 +16,11 @@ class GameModel extends ChangeNotifier {
   int _round = -1;
   List<int> _team1Score = [0, 0, 0];
   List<int> _team2Score = [0, 0, 0];
+  String _team1 = "Team 1";
+  String _team2 = "Team 2";
+  Color _team1Color = Colors.red;
+  Color _team2Color = Colors.blue;
+
   bool _team1Turn = true;
   int _gameColorIndex = 0;
   final List<Color> _gameColors = [
@@ -36,7 +41,13 @@ class GameModel extends ChangeNotifier {
   String get currentThing => thingsLeft > 0 ? _wordsInRound.first : "EMPTY";
   int get thingsLeft => _wordsInRound.length;
   int get thingCount => _words.length;
-  String get team => _team1Turn ? "Team 1" : "Team 2";
+  String get team1 => _team1;
+  String get team2 => _team2;
+  String get team => _team1Turn ? _team1 : _team2;
+  Color get team1Color => _team1Color;
+  Color get team2Color => _team2Color;
+  //Instead of hardcoding team 1/2 pull the user defined team name.
+
   String get round => "Round ${_round + 1}";
   Color get gameColor => _gameColors[_gameColorIndex];
 
@@ -50,6 +61,44 @@ class GameModel extends ChangeNotifier {
       default:
         return "Say anything but the word";
     }
+  }
+
+  bool setTeamName(String name, bool isTeam1) {
+    if (isTeam1 && _team2.toUpperCase() == name.toUpperCase()) {
+      return false;
+    }
+    if (!isTeam1 && _team1.toUpperCase() == name.toUpperCase()) {
+      return false;
+    }
+
+    if (isTeam1) {
+      _team1 = name;
+    } else {
+      _team2 = name;
+    }
+    notifyListeners();
+    return true;
+  }
+
+  bool setTeamColor(Color color, bool isTeam1) {
+    if (isTeam1 && _team2Color == color) {
+      return false;
+    }
+    if (!isTeam1 && _team1Color == color) {
+      return false;
+    }
+
+    if (isTeam1) {
+      _team1Color = color;
+    } else {
+      _team2Color = color;
+    }
+    notifyListeners();
+    return true;
+  }
+
+  Map<Color, bool> getGameColors() {
+    return {for (var c in _gameColors) c: c != _team1Color && c != _team2Color};
   }
 
   int get team1Score => _team1Score.fold(0, (prev, cur) => prev + cur);
