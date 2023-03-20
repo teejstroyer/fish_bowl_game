@@ -83,6 +83,8 @@ class GameModel extends ChangeNotifier {
     if (thingsLeft > 0 && _round < _team1Score.length) {
       _wordsInRound.removeAt(0);
 
+
+      _audioPlayer.stop();
       _audioPlayer.play(AssetSource('audio/AcceptThing.mp3'));
 
       if (_team1Turn) {
