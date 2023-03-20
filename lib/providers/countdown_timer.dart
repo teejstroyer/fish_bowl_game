@@ -3,7 +3,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 class CountdownTimer extends ChangeNotifier {
-
   final AudioPlayer _audioPlayer = AudioPlayer();
   Duration _maxDuration = const Duration(seconds: 60);
   Duration _duration = const Duration();
@@ -33,7 +32,11 @@ class CountdownTimer extends ChangeNotifier {
       _duration = _maxDuration;
     } else {
       _duration = Duration(seconds: seconds);
-      _audioPlayer.play(AssetSource('audio/TimeTick.mp3'));
+
+      if (seconds < 5) {
+        _audioPlayer.stop();
+        _audioPlayer.play(AssetSource('audio/TimeTick.mp3'));
+      }
     }
 
     notifyListeners();
