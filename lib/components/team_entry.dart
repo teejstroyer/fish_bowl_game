@@ -119,10 +119,6 @@ class _TeamEntryState extends State<TeamEntry> {
             ).then((value) => setState(() {}));
           },
         ),
-        // CircleAvatar(
-        //   backgroundColor: widget.getTeamColor(),
-        //   foregroundColor: Colors.black,
-        // ),
         Expanded(
           child: TextField(
             controller: _textController,
