@@ -1,3 +1,4 @@
+import 'package:fish_bowl_game/components/gridview_item.dart';
 import 'package:fish_bowl_game/providers/game_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -50,31 +51,94 @@ class _TeamEntryState extends State<TeamEntry> {
   @override
   Widget build(BuildContext context) {
     GameModel gameModel = Provider.of<GameModel>(context, listen: false);
-    return Container(
-      //Border white rounded
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: widget.getTeamColor(),
-            foregroundColor: Colors.white,
-          ),
-          Expanded(
-            child: TextField(
-              controller: _textController,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).inputDecorationTheme.labelStyle,
-              textAlignVertical: TextAlignVertical.center,
-              decoration: const InputDecoration(
-                hintText: 'Team Name',
-              ),
+    var gameColors = gameModel.getGameColors().keys;
+    var isNotUsedValues = gameModel.getGameColors();
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(Icons.circle),
+          color: widget.getTeamColor(),
+          iconSize: 40,
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: ((context) {
+                return AlertDialog(
+                  actions: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          color: Colors.black,
+                          iconSize: 48.0,
+                          icon: const Icon(Icons.close),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                  content: Container(
+                    height: MediaQuery.of(context).size.height * 0.9,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    color: Colors.white,
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: gameColors.length,
+                      itemBuilder: (BuildContext context, index) {
+                        var isNotUsed =
+                            (isNotUsedValues[gameColors.elementAt(index)] ??
+                                false);
+                        var color = gameColors.elementAt(index);
+                        return SizedBox(
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            child: Material(
+                              color: isNotUsed ? color : color.withOpacity(.4),
+                              child: InkWell(
+                                onTap: isNotUsed
+                                    ? () {
+                                        widget.setTeamColor(color);
+                                        Navigator.of(context).pop();
+                                      }
+                                    : null,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ).then((value) => setState(() {}));
+          },
+        ),
+        // CircleAvatar(
+        //   backgroundColor: widget.getTeamColor(),
+        //   foregroundColor: Colors.black,
+        // ),
+        Expanded(
+          child: TextField(
+            controller: _textController,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).inputDecorationTheme.labelStyle,
+            textAlignVertical: TextAlignVertical.center,
+            decoration: const InputDecoration(
+              hintText: 'Team Name',
             ),
           ),
-          IconButton(
-            onPressed: _validInput ? setTeamName : null,
-            icon: const Icon(Icons.check),
-          ),
-        ],
-      ),
+        ),
+        IconButton(
+          onPressed: _validInput ? setTeamName : null,
+          icon: const Icon(Icons.check),
+        ),
+      ],
     );
   }
 }
