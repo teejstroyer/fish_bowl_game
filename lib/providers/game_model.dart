@@ -23,6 +23,7 @@ class GameModel extends ChangeNotifier {
 
   bool _team1Turn = true;
   int _gameColorIndex = 0;
+
   final List<Color> _gameColors = [
     Colors.red,
     Colors.blue,
