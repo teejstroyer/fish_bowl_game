@@ -5,14 +5,18 @@ import 'package:fish_bowl_game/screens/game_over_screen.dart';
 import 'package:fish_bowl_game/screens/game_screen.dart';
 import 'package:fish_bowl_game/screens/new_game_screen.dart';
 import 'package:fish_bowl_game/screens/round_results_screen.dart';
+import 'package:fish_bowl_game/screens/title_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class GameModel extends ChangeNotifier {
+  //Populated by proxy provider
+  CountdownTimer countdownTimer = CountdownTimer();
   final AudioPlayer _audioPlayer = AudioPlayer();
   final List<String> _words = [];
   List<String> _wordsInRound = [];
 
+  bool _team1Turn = true;
   int _round = -1;
   List<int> _team1Score = [0, 0, 0];
   List<int> _team2Score = [0, 0, 0];
@@ -20,9 +24,6 @@ class GameModel extends ChangeNotifier {
   String _team2 = "Team 2";
   Color _team1Color = Colors.red;
   Color _team2Color = Colors.blue;
-
-  bool _team1Turn = true;
-  int _gameColorIndex = 0;
 
   final List<Color> _gameColors = [
     Colors.red,
@@ -32,13 +33,6 @@ class GameModel extends ChangeNotifier {
     Colors.orange,
   ];
 
-  //Populated by proxy provider
-  CountdownTimer countdownTimer = CountdownTimer();
-
-  GameModel() {
-    _gameColorIndex = Random().nextInt(_gameColors.length);
-  }
-
   String get currentThing => thingsLeft > 0 ? _wordsInRound.first : "EMPTY";
   int get thingsLeft => _wordsInRound.length;
   int get thingCount => _words.length;
@@ -47,11 +41,10 @@ class GameModel extends ChangeNotifier {
   String get team => _team1Turn ? _team1 : _team2;
   Color get team1Color => _team1Color;
   Color get team2Color => _team2Color;
-  //Instead of hardcoding team 1/2 pull the user defined team name.
-
   String get round => "Round ${_round + 1}";
-  Color get gameColor => _gameColors[_gameColorIndex];
-
+  Color get gameColor => _team1Turn ? _team1Color : _team2Color;
+  int get team1Score => _team1Score.fold(0, (prev, cur) => prev + cur);
+  int get team2Score => _team2Score.fold(0, (prev, cur) => prev + cur);
   String get rules {
     switch (_round) {
       case 2:
@@ -64,36 +57,38 @@ class GameModel extends ChangeNotifier {
     }
   }
 
-  bool setTeamName(String name, bool isTeam1) {
-    if (isTeam1 && _team2.toUpperCase() == name.toUpperCase()) {
+  bool setTeam1Name(String name) {
+    if (_team2.toUpperCase() == name.toUpperCase()) {
       return false;
     }
-    if (!isTeam1 && _team1.toUpperCase() == name.toUpperCase()) {
-      return false;
-    }
-
-    if (isTeam1) {
-      _team1 = name;
-    } else {
-      _team2 = name;
-    }
+    _team1 = name;
     notifyListeners();
     return true;
   }
 
-  bool setTeamColor(Color color, bool isTeam1) {
-    if (isTeam1 && _team2Color == color) {
+  bool setTeam2Name(String name) {
+    if (_team1.toUpperCase() == name.toUpperCase()) {
       return false;
     }
-    if (!isTeam1 && _team1Color == color) {
-      return false;
-    }
+    _team2 = name;
+    notifyListeners();
+    return true;
+  }
 
-    if (isTeam1) {
-      _team1Color = color;
-    } else {
-      _team2Color = color;
+  bool setTeam1Color(Color color) {
+    if (_team2Color == color) {
+      return false;
     }
+    _team1Color = color;
+    notifyListeners();
+    return true;
+  }
+
+  bool setTeam2Color(Color color) {
+    if (_team1Color == color) {
+      return false;
+    }
+    _team2Color = color;
     notifyListeners();
     return true;
   }
@@ -102,34 +97,8 @@ class GameModel extends ChangeNotifier {
     return {for (var c in _gameColors) c: c != _team1Color && c != _team2Color};
   }
 
-  int get team1Score => _team1Score.fold(0, (prev, cur) => prev + cur);
-  int get team2Score => _team2Score.fold(0, (prev, cur) => prev + cur);
   int roundScore(bool team1, int round) {
     return team1 ? _team1Score[round] : _team2Score[round];
-  }
-
-  void nextColor() {
-    _gameColorIndex++;
-    if (_gameColorIndex >= _gameColors.length) _gameColorIndex = 0;
-  }
-
-  void showGameOverScreen(BuildContext context) {
-    countdownTimer.stopTimer(reset: true);
-
-    Navigator.of(context).pop();
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => const GameOverScreen()),
-    );
-  }
-
-  void showNewGameScreen(BuildContext context) {
-    newGame();
-    countdownTimer.resetTimer();
-
-    Navigator.of(context).pop();
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => const NewGameScreen()),
-    );
   }
 
   void newGame() {
@@ -173,54 +142,12 @@ class GameModel extends ChangeNotifier {
         } else if (countdownTimer.time < 1) {
           nextTeam(context);
         } else {
-          showRoundResults(context, false, true);
+          showRoundResultsScreen(context, false, true);
         }
       } else {
         notifyListeners();
       }
     }
-  }
-
-  void updateRound() {
-    preventEvenThingCount().then((_) {
-      _round++;
-      _wordsInRound = [..._words];
-      _wordsInRound.shuffle();
-    });
-  }
-
-  void showRoundResults(BuildContext context, bool resetTimer, bool newRound) {
-    countdownTimer.stopTimer(reset: resetTimer);
-
-    if (newRound) {
-      updateRound();
-    }
-    nextColor();
-
-    Navigator.of(context).pop();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => RoundResultsScreen(resetTimer),
-      ),
-    );
-  }
-
-  void showGameScreen(BuildContext context, bool resetTimer) {
-    nextColor();
-    if (resetTimer) {
-      countdownTimer.resetTimer();
-    }
-
-    Navigator.of(context).pop();
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => const GameScreen()),
-    );
-  }
-
-  void nextTeam(BuildContext context) {
-    nextColor();
-    _team1Turn = !_team1Turn;
-    showRoundResults(context, true, false);
   }
 
   void startTimer(BuildContext context) {
@@ -250,5 +177,74 @@ class GameModel extends ChangeNotifier {
         notifyListeners();
       });
     }
+  }
+
+  void updateRound() {
+    preventEvenThingCount().then((_) {
+      _round++;
+      _wordsInRound = [..._words];
+      _wordsInRound.shuffle();
+    });
+  }
+
+  void nextTeam(BuildContext context) {
+    _team1Turn = !_team1Turn;
+    showRoundResultsScreen(context, true, false);
+  }
+
+  void showGameOverScreen(BuildContext context) {
+    countdownTimer.stopTimer(reset: true);
+
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const GameOverScreen()),
+    );
+  }
+
+  void showNewGameScreen(BuildContext context) {
+    newGame();
+    countdownTimer.resetTimer();
+
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const NewGameScreen()),
+    );
+  }
+
+  void showRoundResultsScreen(
+      BuildContext context, bool resetTimer, bool newRound) {
+    countdownTimer.stopTimer(reset: resetTimer);
+
+    if (newRound) {
+      updateRound();
+    }
+
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => RoundResultsScreen(resetTimer),
+      ),
+    );
+  }
+
+  void showGameScreen(BuildContext context, bool resetTimer) {
+    if (resetTimer) {
+      countdownTimer.resetTimer();
+    }
+
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const GameScreen()),
+    );
+  }
+
+  void showTitleScreen(BuildContext context) {
+    newGame();
+    countdownTimer.resetTimer();
+
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const TitleScreen()),
+    );
   }
 }

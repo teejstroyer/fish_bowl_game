@@ -21,7 +21,7 @@ class GameOverScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Center(
                           child: Text(
@@ -40,7 +40,7 @@ class GameOverScreen extends StatelessWidget {
                       children: [
                         TextButton(
                           onPressed: () {
-                            gameModel.showNewGameScreen(context);
+                            gameModel.showTitleScreen(context);
                           },
                           child: const Text("NEW GAME"),
                         ),

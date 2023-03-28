@@ -144,7 +144,7 @@ class _NewGameScreenState extends State<NewGameScreen> {
 
   void startGame() {
     submitList();
-    Provider.of<GameModel>(context, listen: false).showRoundResults(
+    Provider.of<GameModel>(context, listen: false).showRoundResultsScreen(
       context,
       true,
       true,
