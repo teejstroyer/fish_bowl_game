@@ -100,10 +100,8 @@ class _TeamEntryState extends State<TeamEntry> {
                               child: Ink(
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: isNotUsed
-                                        ? Colors.black
-                                        : color.withOpacity(.5),
-                                    width: 2,
+                                    color: color,
+                                    width: 3,
                                   ),
                                   borderRadius: BorderRadius.circular(5),
                                 ),
