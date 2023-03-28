@@ -4,6 +4,7 @@ import 'package:fish_bowl_game/providers/game_model.dart';
 import 'package:fish_bowl_game/screens/new_game_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:fish_bowl_game/screens/title_screen.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: GameTheme().theme,
-      home: const NewGameScreen(),
+      home: TitleScreen(),
     );
   }
 }
