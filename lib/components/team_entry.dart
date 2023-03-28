@@ -95,14 +95,26 @@ class _TeamEntryState extends State<TeamEntry> {
                           child: Container(
                             padding: const EdgeInsets.all(10),
                             child: Material(
+                              borderRadius: BorderRadius.circular(5),
                               color: isNotUsed ? color : color.withOpacity(.4),
-                              child: InkWell(
-                                onTap: isNotUsed
-                                    ? () {
-                                        widget.setTeamColor(color);
-                                        Navigator.of(context).pop();
-                                      }
-                                    : null,
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: isNotUsed
+                                        ? Colors.black
+                                        : color.withOpacity(.5),
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: InkWell(
+                                  onTap: isNotUsed
+                                      ? () {
+                                          widget.setTeamColor(color);
+                                          Navigator.of(context).pop();
+                                        }
+                                      : null,
+                                ),
                               ),
                             ),
                           ),
