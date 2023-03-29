@@ -23,6 +23,7 @@ jobs:
       - run: flutter build web --base-href /fishbowl/
 
   deploy:
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
