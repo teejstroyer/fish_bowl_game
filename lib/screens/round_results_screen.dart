@@ -36,7 +36,11 @@ class RoundResultsScreen extends StatelessWidget {
                           gameModel.round,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        Text(roundMessage),
+                        Text(
+                          roundMessage,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ],
                     ),
                   ),
@@ -65,7 +69,11 @@ class RoundResultsScreen extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        Text(roundMessage),
+                        Text(
+                          roundMessage,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                         TextButton(
                           onPressed: () {
                             gameModel.showGameScreen(context, _resetTimer);

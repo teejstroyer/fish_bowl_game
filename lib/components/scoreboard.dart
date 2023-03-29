@@ -46,8 +46,8 @@ class ScoreBoard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Column(children: [
-              Text("Team 1", style: style),
-              Text("Team 2", style: style),
+              Text(model.team1, style: style),
+              Text(model.team2, style: style),
             ]),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: padding),

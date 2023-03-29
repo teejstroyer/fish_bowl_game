@@ -55,79 +55,91 @@ class _TeamEntryState extends State<TeamEntry> {
     var isNotUsedValues = gameModel.getGameColors();
     return Row(
       children: [
-        IconButton(
-          icon: const Icon(Icons.circle),
-          color: widget.getTeamColor(),
-          iconSize: 40,
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: ((context) {
-                return AlertDialog(
-                  actions: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          color: Colors.black,
-                          iconSize: 48.0,
-                          icon: const Icon(Icons.close),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
+        Container(
+          height: Theme.of(context).inputDecorationTheme.labelStyle!.fontSize,
+          width: Theme.of(context).inputDecorationTheme.labelStyle!.fontSize,
+          clipBehavior: Clip.hardEdge,
+          margin: const EdgeInsets.all(0),
+          padding: const EdgeInsets.all(0),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              border: Border.all(width: 2, color: Colors.white)),
+          child: Material(
+            shape: const CircleBorder(),
+            color: widget.getTeamColor(),
+            child: InkWell(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: ((context) {
+                    return AlertDialog(
+                      actions: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              color: Colors.black,
+                              iconSize: 48.0,
+                              icon: const Icon(Icons.close),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
                         ),
                       ],
-                    ),
-                  ],
-                  content: Container(
-                    height: MediaQuery.of(context).size.height * 0.9,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    color: Colors.white,
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: gameColors.length,
-                      itemBuilder: (BuildContext context, index) {
-                        var isNotUsed =
-                            (isNotUsedValues[gameColors.elementAt(index)] ??
-                                false);
-                        var color = gameColors.elementAt(index);
-                        return SizedBox(
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            child: Material(
-                              borderRadius: BorderRadius.circular(5),
-                              color: isNotUsed ? color : color.withOpacity(.4),
-                              child: Ink(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: color,
-                                    width: 3,
-                                  ),
+                      content: Container(
+                        height: MediaQuery.of(context).size.height * 0.9,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        color: Colors.white,
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          itemCount: gameColors.length,
+                          itemBuilder: (BuildContext context, index) {
+                            var isNotUsed =
+                                (isNotUsedValues[gameColors.elementAt(index)] ??
+                                    false);
+                            var color = gameColors.elementAt(index);
+                            return SizedBox(
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                child: Material(
                                   borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: InkWell(
-                                  onTap: isNotUsed
-                                      ? () {
-                                          widget.setTeamColor(color);
-                                          Navigator.of(context).pop();
-                                        }
-                                      : null,
+                                  color:
+                                      isNotUsed ? color : color.withOpacity(.4),
+                                  child: Ink(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: color,
+                                        width: 3,
+                                      ),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: InkWell(
+                                      onTap: isNotUsed
+                                          ? () {
+                                              widget.setTeamColor(color);
+                                              Navigator.of(context).pop();
+                                            }
+                                          : null,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                            );
+                          },
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
                           ),
-                        );
-                      },
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
+                        ),
                       ),
-                    ),
-                  ),
-                );
-              }),
-            ).then((value) => setState(() {}));
-          },
+                    );
+                  }),
+                ).then((value) => setState(() {}));
+              },
+            ),
+          ),
         ),
         Expanded(
           child: TextField(

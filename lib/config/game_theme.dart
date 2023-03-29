@@ -3,8 +3,46 @@ import 'package:flutter/material.dart';
 
 class GameTheme {
   ThemeData get theme {
+    const fontFeatures = [FontFeature.tabularFigures()];
+    const primaryColor = Colors.white;
+    const fontFamily = 'TeamB';
+
+    const textTheme = TextTheme(
+      headlineLarge: TextStyle(
+        color: primaryColor,
+        fontSize: 80,
+        fontWeight: FontWeight.bold,
+        fontFeatures: fontFeatures,
+      ),
+      bodySmall: TextStyle(
+        color: primaryColor,
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+        fontFeatures: fontFeatures,
+      ),
+      bodyMedium: TextStyle(
+        color: primaryColor,
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        fontFeatures: fontFeatures,
+      ),
+      bodyLarge: TextStyle(
+        color: primaryColor,
+        fontSize: 40,
+        fontWeight: FontWeight.bold,
+        fontFeatures: fontFeatures,
+      ),
+      labelLarge: TextStyle(
+        color: primaryColor,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        fontFeatures: fontFeatures,
+      ),
+    );
+
     return ThemeData(
-      primaryColor: Colors.white,
+      fontFamily:fontFamily,
+      primaryColor: primaryColor,
       inputDecorationTheme: const InputDecorationTheme(
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,
@@ -12,66 +50,28 @@ class GameTheme {
         labelStyle: TextStyle(
           fontSize: 30,
           fontWeight: FontWeight.bold,
-          color: Colors.white,
+          color: primaryColor,
         ),
       ),
-      textTheme: const TextTheme(
-        bodySmall: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w900,
-          color: Colors.white,
-          fontFeatures: [FontFeature.tabularFigures()],
-        ),
-        bodyMedium: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w900,
-          color: Colors.white,
-          fontFeatures: [FontFeature.tabularFigures()],
-        ),
-        bodyLarge: TextStyle(
-          fontSize: 40,
-          color: Colors.white,
-          fontFeatures: [FontFeature.tabularFigures()],
-        ),
-        labelLarge: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w900,
-          color: Colors.white,
-          fontFeatures: [FontFeature.tabularFigures()],
-        ),
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: primaryColor,
+        selectionColor: Colors.white54,
+        selectionHandleColor: primaryColor,
       ),
-      primaryTextTheme: const TextTheme(
-        bodyLarge: TextStyle(
-          fontSize: 40,
-          color: Colors.white,
-          fontFeatures: [FontFeature.tabularFigures()],
-        ),
-        labelLarge: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w900,
-          color: Colors.white,
-          fontFeatures: [FontFeature.tabularFigures()],
-        ),
-      ),
-      buttonTheme: const ButtonThemeData(
-        buttonColor: Colors.white,
-        disabledColor: Colors.white54,
-        focusColor: Colors.white,
-        hoverColor: Colors.white,
-        highlightColor: Colors.white,
-        splashColor: Colors.transparent,
-      ),
+      primaryTextTheme: textTheme,
+      textTheme: textTheme,
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: Colors.white,
+          foregroundColor: primaryColor,
           textStyle: const TextStyle(
-            decorationColor: Colors.white,
-            fontWeight: FontWeight.w900,
+            fontFamily: fontFamily,
+            fontWeight: FontWeight.bold,
+            decorationColor: primaryColor,
             fontSize: 28,
           ),
         ),
       ),
-      iconTheme: const IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(color: primaryColor),
     );
   }
 }

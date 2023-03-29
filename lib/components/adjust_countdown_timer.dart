@@ -23,9 +23,9 @@ class AdjustCountdownTimer extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+              Text(
                 'Round Time',
-                style: TextStyle(fontSize: 32),
+                style: Theme.of(context).primaryTextTheme.bodyLarge,
               ),
               timerUI(),
             ],
@@ -51,8 +51,7 @@ class AdjustCountdownTimer extends StatelessWidget {
           ),
           Text(
             timer.maxTime.toString().padLeft(3, '0'),
-            style: const TextStyle(
-                fontSize: 48, fontFeatures: [FontFeature.tabularFigures()]),
+            style: Theme.of(context).primaryTextTheme.bodyLarge,
           ),
           IconButton(
             iconSize: 50,

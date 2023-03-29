@@ -1,7 +1,6 @@
 import 'package:fish_bowl_game/config/game_theme.dart';
 import 'package:fish_bowl_game/providers/countdown_timer.dart';
 import 'package:fish_bowl_game/providers/game_model.dart';
-import 'package:fish_bowl_game/screens/new_game_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fish_bowl_game/screens/title_screen.dart';
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: GameTheme().theme,
-      home: TitleScreen(),
+      home: const TitleScreen(),
     );
   }
 }

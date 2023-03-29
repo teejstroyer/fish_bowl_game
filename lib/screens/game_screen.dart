@@ -41,6 +41,7 @@ class _GameScreenState extends State<GameScreen> {
                         gameModel.team,
                         style: Theme.of(context).primaryTextTheme.bodyLarge,
                       ),
+
                     ),
                     Center(
                       child: Text(

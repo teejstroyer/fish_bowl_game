@@ -102,10 +102,12 @@ class _NewGameScreenState extends State<NewGameScreen> {
                           Text(
                             "${model.thingCount} total",
                             textAlign: TextAlign.right,
+                            style: Theme.of(context).primaryTextTheme.bodySmall,
                           ),
                           Text(
                             "${_things.length}",
                             textAlign: TextAlign.right,
+                            style: Theme.of(context).primaryTextTheme.bodySmall,
                           ),
                         ],
                       ),
