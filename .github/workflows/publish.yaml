@@ -40,4 +40,7 @@ jobs:
         name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
 
-permissions: read-all
+permissions:
+  contents: read
+  id-token: write
+  pages: write
