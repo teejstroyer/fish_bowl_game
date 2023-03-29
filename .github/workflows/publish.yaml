@@ -11,19 +11,7 @@ concurrency:
   group: "pages"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-      - run: flutter pub get
-      - run: flutter build web --base-href /fishbowl/
-
-  deploy:
-    needs: build
+  build-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -32,18 +20,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
+
+      - run: flutter build -v web --release
+
       - name: Setup Pages
         uses: actions/configure-pages@v3
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: 'web/'
+          path: 'build/web/'
 
       - id: deployment
         name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
 
-permissions:
-  contents: read
-  id-token: write
-  pages: write
+permissions: read-all
