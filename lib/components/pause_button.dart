@@ -3,8 +3,8 @@ import 'package:fish_bowl_game/providers/game_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class GamePauseScreenButton extends StatelessWidget {
-  const GamePauseScreenButton({super.key});
+class PauseButton extends StatelessWidget {
+  const PauseButton({super.key});
 
   @override
   Widget build(BuildContext context) {

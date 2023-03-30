@@ -1,4 +1,3 @@
-import 'package:fish_bowl_game/components/gridview_item.dart';
 import 'package:fish_bowl_game/providers/game_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -128,8 +127,7 @@ class _TeamEntryState extends State<TeamEntry> {
                               ),
                             );
                           },
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                           ),
                         ),
