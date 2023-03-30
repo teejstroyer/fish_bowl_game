@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fish_bowl_game/providers/game_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,6 +54,8 @@ class _TeamEntryState extends State<TeamEntry> {
     GameModel gameModel = Provider.of<GameModel>(context, listen: false);
     var gameColors = gameModel.getGameColors().keys;
     var isNotUsedValues = gameModel.getGameColors();
+    var randomColor = gameColors.elementAt(Random().nextInt(gameColors.length));
+
     return Row(
       children: [
         Container(
@@ -77,7 +81,7 @@ class _TeamEntryState extends State<TeamEntry> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             IconButton(
-                              color: Colors.black,
+                              color: randomColor,
                               iconSize: 48.0,
                               icon: const Icon(Icons.close),
                               onPressed: () {
