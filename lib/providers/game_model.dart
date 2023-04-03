@@ -43,6 +43,7 @@ class GameModel extends ChangeNotifier {
   Color get team2Color => _team2Color;
   String get round => "Round ${_round + 1}";
   Color get gameColor => _team1Turn ? _team1Color : _team2Color;
+  Color get gameColorOpposite => _team1Turn ? _team2Color : _team1Color;
   int get team1Score => _team1Score.fold(0, (prev, cur) => prev + cur);
   int get team2Score => _team2Score.fold(0, (prev, cur) => prev + cur);
   String get rules {
@@ -161,6 +162,10 @@ class GameModel extends ChangeNotifier {
     });
   }
 
+  void stopTimer(BuildContext context, bool reset) {
+    countdownTimer.stopTimer(reset: reset);
+  }
+
   Future<String> getRandomWord(int? seed) async {
     String dictionary = await rootBundle.loadString('assets/dictionary.txt');
     var list = dictionary.split(' ');
@@ -195,9 +200,9 @@ class GameModel extends ChangeNotifier {
   void showGameOverScreen(BuildContext context) {
     countdownTimer.stopTimer(reset: true);
 
-    Navigator.of(context).pop();
-    Navigator.of(context).push(
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => const GameOverScreen()),
+      ModalRoute.withName('/'),
     );
   }
 
@@ -205,9 +210,9 @@ class GameModel extends ChangeNotifier {
     newGame();
     countdownTimer.resetTimer();
 
-    Navigator.of(context).pop();
-    Navigator.of(context).push(
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => const NewGameScreen()),
+      ModalRoute.withName('/'),
     );
   }
 
@@ -219,11 +224,11 @@ class GameModel extends ChangeNotifier {
       updateRound();
     }
 
-    Navigator.of(context).pop();
-    Navigator.of(context).push(
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => RoundResultsScreen(resetTimer),
       ),
+      ModalRoute.withName('/'),
     );
   }
 
@@ -232,9 +237,9 @@ class GameModel extends ChangeNotifier {
       countdownTimer.resetTimer();
     }
 
-    Navigator.of(context).pop();
-    Navigator.of(context).push(
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => const GameScreen()),
+      ModalRoute.withName('/'),
     );
   }
 
@@ -242,9 +247,9 @@ class GameModel extends ChangeNotifier {
     newGame();
     countdownTimer.resetTimer();
 
-    Navigator.of(context).pop();
-    Navigator.of(context).push(
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => const TitleScreen()),
+      ModalRoute.withName('/'),
     );
   }
 }

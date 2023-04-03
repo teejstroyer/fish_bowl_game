@@ -1,3 +1,4 @@
+import 'package:fish_bowl_game/components/countdown_clock.dart';
 import 'package:fish_bowl_game/components/screen_base.dart';
 import 'package:fish_bowl_game/components/pause_button.dart';
 import 'package:fish_bowl_game/providers/countdown_timer.dart';
@@ -22,43 +23,96 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     var gameModel = Provider.of<GameModel>(context, listen: false);
+    var countdownTimer = Provider.of<CountdownTimer>(context, listen: false);
+
     return ScreenBase(
       backgroundColor: gameModel.gameColor,
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: const [PauseButton()],
+            children: [
+              PauseButton(
+                onPause: () {
+                  countdownTimer.stopTimer(reset: false);
+                },
+                onResume: () {
+                  gameModel.startTimer(context);
+                },
+              )
+            ],
+          ),
+          Column(
+            children: [
+              Center(
+                child: Text(
+                  gameModel.team,
+                  style: Theme.of(context).primaryTextTheme.headlineSmall,
+                ),
+              ),
+              Center(
+                child: Text(
+                  gameModel.rules,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           ),
           Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Center(
-                  child: Text(
-                    gameModel.team,
+            child: Center(
+              child: Consumer<GameModel>(
+                builder: (context, model, child) {
+                  return Text(
+                    model.currentThing,
                     style: Theme.of(context).primaryTextTheme.bodyLarge,
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    gameModel.rules,
-                  ),
-                ),
-              ],
+                    textAlign: TextAlign.center,
+                  );
+                },
+              ),
             ),
           ),
           Expanded(
-            flex: 3,
-            child: Consumer<GameModel>(
-              builder: (context, model, child) {
-                return Column(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                var outer = constraints.biggest.shortestSide;
+                var inner = outer * 0.85;
+                return Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Expanded(
-                      child: Center(
-                        child: Text(
-                          model.currentThing,
-                          style: Theme.of(context).primaryTextTheme.bodyLarge,
+                    CountdownClock(
+                      color: Colors.white,
+                      diameter: outer,
+                    ),
+                    Container(
+                      width: inner,
+                      height: inner,
+                      clipBehavior: Clip.hardEdge,
+                      margin: const EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
+                      decoration: BoxDecoration(
+                        color: gameModel.gameColor,
+                        borderRadius: BorderRadius.circular(inner),
+                      ),
+                    ),
+                    Container(
+                      width: inner,
+                      height: inner,
+                      clipBehavior: Clip.hardEdge,
+                      margin: const EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(inner),
+                      ),
+                      child: Material(
+                        shape: const CircleBorder(),
+                        color: Colors.black26,
+                        child: InkWell(
+                          onTap: () => gameModel.acceptThing(context),
+                          child: Icon(
+                            Icons.check,
+                            size: inner * .80,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -67,40 +121,8 @@ class _GameScreenState extends State<GameScreen> {
               },
             ),
           ),
-          Consumer<CountdownTimer>(
-            builder: (context, model, child) {
-              return AnimatedScale(
-                scale: (model.time % 2 == 0) ? 1 : 5,
-                duration: const Duration(milliseconds: 1500),
-                child: Center(
-                  child: Text(model.time.toString()),
-                ),
-              );
-            },
-          ),
-          Expanded(
-            flex: 2,
-            child: Column(
-              children: [
-                Center(
-                  child: IconButton(
-                    onPressed: () => acceptThing(
-                      context,
-                      gameModel,
-                    ),
-                    icon: const Icon(Icons.check_circle),
-                    iconSize: 200,
-                  ),
-                )
-              ],
-            ),
-          ),
         ],
       ),
     );
-  }
-
-  void acceptThing(BuildContext context, GameModel gameModel) {
-    gameModel.acceptThing(context);
   }
 }

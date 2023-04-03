@@ -14,41 +14,53 @@ class GameTheme {
         fontWeight: FontWeight.bold,
         fontFeatures: fontFeatures,
       ),
-      bodySmall: TextStyle(
+      headlineMedium: TextStyle(
         color: primaryColor,
-        fontSize: 14,
+        fontSize: 60,
         fontWeight: FontWeight.bold,
         fontFeatures: fontFeatures,
       ),
-      bodyMedium: TextStyle(
-        color: primaryColor,
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-        fontFeatures: fontFeatures,
-      ),
-      bodyLarge: TextStyle(
+      headlineSmall: TextStyle(
         color: primaryColor,
         fontSize: 40,
         fontWeight: FontWeight.bold,
         fontFeatures: fontFeatures,
       ),
+      bodySmall: TextStyle(
+        color: primaryColor,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        fontFeatures: fontFeatures,
+      ),
+      bodyMedium: TextStyle(
+        color: primaryColor,
+        fontSize: 28,
+        fontWeight: FontWeight.bold,
+        fontFeatures: fontFeatures,
+      ),
+      bodyLarge: TextStyle(
+        color: primaryColor,
+        fontSize: 34,
+        fontWeight: FontWeight.bold,
+        fontFeatures: fontFeatures,
+      ),
       labelLarge: TextStyle(
         color: primaryColor,
-        fontSize: 24,
+        fontSize: 34,
         fontWeight: FontWeight.bold,
         fontFeatures: fontFeatures,
       ),
     );
 
     return ThemeData(
-      fontFamily:fontFamily,
+      fontFamily: fontFamily,
       primaryColor: primaryColor,
       inputDecorationTheme: const InputDecorationTheme(
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,
-        hintStyle: TextStyle(color: Colors.white54, fontSize: 34),
+        hintStyle: TextStyle(color: Colors.black38, fontSize: 34),
         labelStyle: TextStyle(
-          fontSize: 30,
+          fontSize: 34,
           fontWeight: FontWeight.bold,
           color: primaryColor,
         ),
@@ -63,11 +75,13 @@ class GameTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: primaryColor,
+          disabledForegroundColor: Colors.black38,
+          disabledIconColor: Colors.black38,
           textStyle: const TextStyle(
             fontFamily: fontFamily,
             fontWeight: FontWeight.bold,
             decorationColor: primaryColor,
-            fontSize: 28,
+            fontSize: 60,
           ),
         ),
       ),

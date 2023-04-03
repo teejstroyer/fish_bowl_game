@@ -1,3 +1,4 @@
+import 'package:fish_bowl_game/components/pause_button.dart';
 import 'package:fish_bowl_game/components/screen_base.dart';
 import 'package:fish_bowl_game/providers/game_model.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,10 @@ class _NewGameScreenState extends State<NewGameScreen> {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Align(alignment: Alignment.topRight, child: buildThingCount()),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            buildThingCount(),
+            PauseButton(onPause: () {}, onResume: () {})
+          ]),
           getPlayerThings(),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -52,7 +56,7 @@ class _NewGameScreenState extends State<NewGameScreen> {
                   style: Theme.of(context).inputDecorationTheme.labelStyle,
                   textAlignVertical: TextAlignVertical.center,
                   decoration: const InputDecoration(
-                    hintText: 'PERSON PLACE THING',
+                    hintText: 'NOUN OR PHRASE',
                   ),
                 ),
               ),
@@ -87,23 +91,20 @@ class _NewGameScreenState extends State<NewGameScreen> {
   Consumer<GameModel> buildThingCount() {
     return Consumer<GameModel>(
       builder: (context, model, child) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                "${model.thingCount} total",
-                textAlign: TextAlign.right,
-                style: Theme.of(context).primaryTextTheme.bodySmall,
-              ),
-              Text(
-                "${_things.length}",
-                textAlign: TextAlign.right,
-                style: Theme.of(context).primaryTextTheme.bodySmall,
-              ),
-            ],
-          ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "${model.thingCount} total",
+              textAlign: TextAlign.left,
+              style: Theme.of(context).primaryTextTheme.bodySmall,
+            ),
+            Text(
+              "${_things.length}",
+              textAlign: TextAlign.left,
+              style: Theme.of(context).primaryTextTheme.bodySmall,
+            ),
+          ],
         );
       },
     );

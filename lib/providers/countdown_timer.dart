@@ -33,7 +33,7 @@ class CountdownTimer extends ChangeNotifier {
     } else {
       _duration = Duration(seconds: seconds);
 
-      if (seconds < 5) {
+      if (seconds < 6) {
         _audioPlayer.stop();
         _audioPlayer.play(AssetSource('audio/TimeTick.mp3'));
       }

@@ -92,6 +92,12 @@ class _TeamEntryState extends State<TeamEntry> {
                         ),
                       ],
                       content: Container(
+                        constraints: const BoxConstraints(
+                          maxHeight: 400,
+                          maxWidth: 400,
+                          minWidth: 200,
+                          minHeight: 200,
+                        ),
                         height: MediaQuery.of(context).size.height * 0.9,
                         width: MediaQuery.of(context).size.width * 0.9,
                         color: Colors.white,
@@ -131,7 +137,8 @@ class _TeamEntryState extends State<TeamEntry> {
                               ),
                             );
                           },
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                           ),
                         ),

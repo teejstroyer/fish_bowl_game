@@ -1,4 +1,5 @@
-import 'package:fish_bowl_game/components/adjust_countdown_timer.dart';
+import 'package:fish_bowl_game/components/adjust_countdown_timer_button.dart';
+import 'package:fish_bowl_game/components/pause_button.dart';
 import 'package:fish_bowl_game/components/scoreboard.dart';
 import 'package:fish_bowl_game/components/screen_base.dart';
 import 'package:fish_bowl_game/providers/countdown_timer.dart';
@@ -14,68 +15,65 @@ class RoundResultsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var gameModel = Provider.of<GameModel>(context, listen: false);
     var countdownTimer = Provider.of<CountdownTimer>(context, listen: false);
-    String roundMessage = "${gameModel.team}'s turn";
-    if (countdownTimer.time < countdownTimer.maxTime &&
-        countdownTimer.time > 0) {
-      roundMessage =
-          "It is STILL ${gameModel.team}'s turn, they have ${countdownTimer.time} seconds left to start the new round";
-    }
 
     return ScreenBase(
       backgroundColor: gameModel.gameColor,
       child: Column(
         children: [
-          Expanded(
-            child: Column(
-              children: [
-                Text(
-                  gameModel.round,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                Text(
-                  roundMessage,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const AdjustCountdownTimerButton(),
+              PauseButton(onPause: () {}, onResume: () {}),
+            ],
           ),
-          Expanded(child: ScoreBoard(model: gameModel)),
           Expanded(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  "DA RULES",
-                  style: Theme.of(context).textTheme.bodyMedium,
+                Column(
+                  children: [
+                    Text(
+                      gameModel.round,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    Text(
+                      "${gameModel.team}'s turn",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ],
                 ),
                 Text(
                   gameModel.rules,
                   style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
           ),
-          countdownTimer.time == countdownTimer.maxTime
-              ? const Expanded(
-                  child: Center(
-                    child: AdjustCountdownTimer(),
-                  ),
-                )
-              : Expanded(child: Container()),
+          Expanded(child: Center(child: ScoreBoard(model: gameModel))),
           Expanded(
             child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  roundMessage,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
                 TextButton(
                   onPressed: () {
                     gameModel.showGameScreen(context, _resetTimer);
                   },
                   child: const Text("PLAY"),
                 ),
+                Consumer<CountdownTimer>(
+                  builder: (context, model, child) {
+                    return Text(
+                      countdownTimer.time < countdownTimer.maxTime &&
+                              countdownTimer.time > 0
+                          ? "${model.time} seconds rolled over"
+                          : "${model.time} seconds",
+                      style: Theme.of(context).primaryTextTheme.bodySmall,
+                    );
+                  },
+                )
               ],
             ),
           ),
